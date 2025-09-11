@@ -31,11 +31,15 @@ class PredictIC50FromIdentifier(dspy.Signature):
         desc="A brief description of the biological target or assay context "
              "(e.g. cell line, protein target, etc.) for which you are "
              "predicting the IC50")
+    output_unit: str = dspy.InputField(
+        desc="The unit for the IC50 value you will predict; one of: nM | uM | mM")
     
     drug_identifier_out: str = dspy.OutputField(
         desc="The input drug identifier repeated back for clarity")
     predicted_ic50: float = dspy.OutputField(
-        desc="Your predicted IC50 value (in nM) for the drug against the target")
+        desc="Your predicted IC50 value (in nM) for the drug against the target"
+             ", must be a float value strictly greater than 0"
+        )
     confidence: int = dspy.OutputField(
         desc="Your confidence in the IC50 prediction, on a scale of 0-100")
     explanation: str = dspy.OutputField(

@@ -29,6 +29,15 @@ def _str_with_markup_list(val) -> List[str]:
 
 
 def search_pubchem_cid(query: str, limit: int = 5) -> str:
+    """
+    Search for PubChem CIDs matching a query string that is a name or synonym.
+
+    Args:
+        query (str): The compound name or synonym to search for.
+        limit (int): Maximum number of CIDs to return (default 5).
+    Returns:
+        str: Summary of search results or error message.
+    """
     limit = max(1, int(limit))
 
     result = _search_pubchem_cids_global(query)
@@ -52,6 +61,16 @@ def search_pubchem_cid(query: str, limit: int = 5) -> str:
 
 
 def get_properties(cid: Union[int, str]) -> str:
+    """
+    Using PubChem CID, fetch and summarize key molecular properties.
+    Specifically: molecular formula, weight, lipophilicity (XLogP),
+    TPSA, H-bond donors/acceptors, rotatable bonds, complexity, charge
+
+    Args:
+        cid (int | str): PubChem Compound ID.
+    Returns:
+        str: Summary of molecular properties or error message.
+    """
     result = _get_cid_properties_global(cid)
     if result["error"]:
         return f"Error fetching properties for CID {cid}: {result['error']}"
@@ -131,6 +150,17 @@ def get_properties(cid: Union[int, str]) -> str:
 
 
 def get_assay_summary(cid: Union[int, str], limit: int = 5) -> str:
+    """
+    Fetch and summarize biological assay activity data for a given PubChem CID.
+    Summarizes the number of active, inactive, and inconclusive assays,
+    and lists details of up to `limit` active assays.
+    
+    Args:
+        cid (int | str): PubChem Compound ID.
+        limit (int): Maximum number of active assays to list (default 5).
+    Returns:
+        str: Summary of assay activity or error message.
+    """
     limit = max(0, int(limit))
 
     result = _get_assay_summary_global(cid)
@@ -180,6 +210,13 @@ def get_assay_summary(cid: Union[int, str], limit: int = 5) -> str:
 
 
 def get_safety_summary(cid: Union[int, str]) -> str:
+    """
+    Fetch and summarize GHS safety classification data for a given PubChem CID.
+    Args:
+        cid (int | str): PubChem Compound ID.
+    Returns:
+        str: Summary of GHS classification or error message.
+    """
     result = _get_ghs_classification_global(cid)
     if result["error"]:
         return f"Error fetching GHS classification for CID {cid}: {result['error']}"
@@ -225,6 +262,15 @@ def get_safety_summary(cid: Union[int, str]) -> str:
 
 
 def get_drug_summary(cid: Union[int, str]) -> str:
+    """
+    Fetch and summarize drug/medication information for a given PubChem CID.
+    Specifically: therapeutic uses, drug classes, and FDA status.
+
+    Args:
+        cid (int | str): PubChem Compound ID.
+    Returns:
+        str: Summary of drug/medication information or error message.
+    """
     result = _get_drug_med_info_global(cid)
     if result["error"]:
         return f"Error fetching drug/medication info for CID {cid}: {result['error']}"
@@ -286,7 +332,18 @@ def find_similar_compounds(
     cid: Union[int, str],
     threshold: int = 90,
     limit: int = 10
-) -> str:    
+) -> str:
+    """
+    Find CIDs of compounds similar to a given PubChem CID based on Tanimoto similarity.
+    Additionally fetches the IUPAC name and molecular formula for each similar compound.    
+
+    Args:
+        cid (int | str): PubChem Compound ID.
+        threshold (int): Tanimoto similarity threshold percentage (default 90).
+        limit (int): Maximum number of similar compounds to return (default 10).
+    Returns:
+        str: Summary of similar compounds or error message.
+    """
     limit = max(1, int(limit))
 
     result = _get_similar_cids_global(cid, threshold)

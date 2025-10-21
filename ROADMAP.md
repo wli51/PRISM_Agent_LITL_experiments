@@ -13,6 +13,6 @@
 - [ ] Expand tool library with academic use cases  
   - [ ] Tool rate limiting
   - [x] Tool call caching
-  - [ ] Chembl Query tools
-  - [ ] Pubchem Query tools
+  - [x] Chembl Query tools
+  - [x] Pubchem Query tools
 - [ ] Iterative experiments on hypothetical PRISM-style LITL data  

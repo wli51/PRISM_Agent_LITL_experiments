@@ -8,9 +8,7 @@ from __future__ import annotations
 from typing import Dict, Any, Union
 import httpx
 
-# very ugly, will be replaced with real RL implementation later when that
-# PR is merged
-from ..chembl_tools.temp import DummyRateLimiter as RateLimiter #
+from ..rate_limiter import FileBasedRateLimiter as RateLimiter
 from ..client import Client
 
 # PubChem API client configuration
@@ -18,6 +16,7 @@ from ..client import Client
 PUBCHEM_BASE_URL = "https://pubchem.ncbi.nlm.nih.gov/rest/pug"
 PUBCHEM_VIEW_BASE_URL = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view"
 TIMEOUT = 30.0
+
 
 class PubChemClient(Client):
     """HTTP client for PubChem API interactions (rate-limited, gentle retry)."""
@@ -46,7 +45,11 @@ class PubChemClient(Client):
                 "Accept": "application/json",
             },
         )
-        self.rate_limiter = RateLimiter()
+        self.rate_limiter = RateLimiter(
+            max_requests=max_requests,
+            time_window=time_window,
+            name=rl_name
+        )
 
     def _do(
         self, 

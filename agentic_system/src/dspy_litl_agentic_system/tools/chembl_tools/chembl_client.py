@@ -8,7 +8,7 @@ Adapted from https://github.com/FibrolytixBio/cf-compound-selection-demo.
 from typing import Any, Dict
 import httpx
 
-from .temp import DummyRateLimiter as RateLimiter # will be replaced with real RL
+from ..rate_limiter import FileBasedRateLimiter as RateLimiter
 from ..client import Client
 
 # ChEMBL API client configuration
@@ -41,7 +41,11 @@ class ChEMBLClient(Client):
             },
         )
         
-        self.rate_limiter = RateLimiter()
+        self.rate_limiter = RateLimiter(
+            max_requests=max_requests,
+            time_window=time_window,
+            name=rl_name
+        )
 
     def get(
         self,

@@ -29,8 +29,15 @@ class TraceUnit(BaseModel):
     ic50_pred: Optional[float] = Field(default=None, gt=0)
     confidence: Optional[int] = None
     explanation: Optional[str] = None
-    trajecory: Optional[Dict[str, Any]] = None
+    trajectory: Optional[Dict[str, Any]] = None
 
     # truth and evaluation (all optional)
     ic50_true: Optional[float] = None
     metrics: Optional[Dict[str, float]] = None
+
+class ReflectTraceUnit(BaseModel):
+    verdict: str
+    drug_specific_calibration: str
+    cell_line_specific_calibration: str
+    task_specific_calibration: str
+    trajectory: Optional[Dict[str, Any]] = None

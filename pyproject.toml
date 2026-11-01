@@ -30,7 +30,7 @@ dependencies = [
   "rdkit",
   "cellosaurus_mcp",
   "sentence_transformers",
-  "pymc",
+  "pymc>=5.28.0",
 ]
 
 [project.optional-dependencies]
